@@ -4,12 +4,38 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.ColorSensorV3;
+import com.revrobotics.ColorSensorV3.RawColor;
+
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ExampleSubsystem extends SubsystemBase {
+
+  private final I2C.Port i2cPort = I2C.Port.kOnboard;
+  public final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
+
+  private DigitalInput proximitySensor = new DigitalInput(0);
+
   /** Creates a new ExampleSubsystem. */
-  public ExampleSubsystem() {}
+  public ExampleSubsystem() {
+
+  }
+
+  public String getColor(){
+    RawColor color = colorSensor.getRawColor();
+
+    return "RGB: " + color.red + " " + color.green + " " + color.blue;
+  }
+
+  public String getProximity(){
+    if (proximitySensor.get()){
+      return "Close enough";
+    }
+    return "Too far";
+  }
 
   /**
    * Example command factory method.
